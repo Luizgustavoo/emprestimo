@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:emprestimo/app/data/controllers/loan_controller.dart';
+import 'package:emprestimo/app/data/models/loan_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,72 +28,93 @@ class LoanView extends GetView<LoanController> {
                     )),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(
-                      top: 8, right: 8, left: 8, bottom: 5),
-                  itemCount: 5,
-                  itemBuilder: (ctx, index) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      direction: DismissDirection.endToStart,
-                      confirmDismiss: (DismissDirection direction) async {
-                        if (direction == DismissDirection.endToStart) {
-                          showDialog(context);
-                        }
-                        return false;
-                      },
-                      background: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.green.shade500),
-                          child: const Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Icon(Icons.check_rounded,
-                                        color: Colors.white, size: 25)
-                                  ],
+            Obx(() => Expanded(
+                  child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(
+                          top: 8, right: 8, left: 8, bottom: 5),
+                      itemCount: controller.listLoan.length,
+                      itemBuilder: (ctx, index) {
+                        Loan loan = controller.listLoan[index];
+
+                        String dataEmprestimo =
+                            controller.formatApiDate(loan.createdAt!);
+                        return Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.endToStart,
+                          confirmDismiss: (DismissDirection direction) async {
+                            if (direction == DismissDirection.endToStart) {
+                              showDialog(context, loan.id!);
+                            }
+                            return false;
+                          },
+                          background: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.green.shade500),
+                              child: const Align(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(Icons.check_rounded,
+                                            color: Colors.white, size: 25)
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      child: Card(
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(12),
-                          title: const Text('Equipamento: Notebook nº3'),
-                          subtitle: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Data: 31/05/2024 09:40h'),
-                              Text('Entregue por: Luiz Gustavo da Silva'),
-                              Text('Recebido por: Everton Farias'),
-                            ],
+                          child: Card(
+                            child: ExpansionTile(
+                                dense: true,
+                                tilePadding: const EdgeInsets.all(5),
+                                title: Text(
+                                    'Recebido por:  ${loan.colaborador!.nome}'),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Entregue por: ${loan.user!.name}'),
+                                    Text('Data Emp: $dataEmprestimo'),
+                                    const Text('Data Dev: '),
+                                  ],
+                                ),
+                                leading: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.edit)),
+                                children: loan.itens!.map((item) {
+                                  return Card(
+                                    child: ListTile(
+                                      dense: true,
+                                      title: Text('ITEM: ${item.nome}'),
+                                      subtitle: Text('MODELO: ${item.modelo}'),
+                                      trailing: IconButton(
+                                          onPressed: () {
+                                            controller.deleteItemLoan(item.id!);
+                                          },
+                                          icon: const Icon(CupertinoIcons
+                                              .arrowshape_turn_up_left_2_fill)),
+                                    ),
+                                  );
+                                }).toList()),
                           ),
-                          leading: IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.edit)),
-                        ),
-                      ),
-                    );
-                  }),
-            )
+                        );
+                      }),
+                ))
           ],
         ),
       ),
     );
   }
 
-  void showDialog(context) {
+  void showDialog(context, int id) {
     Get.defaultDialog(
       titlePadding: const EdgeInsets.all(16),
       contentPadding: const EdgeInsets.all(16),
@@ -115,7 +138,9 @@ class LoanView extends GetView<LoanController> {
           ),
         ),
         ElevatedButton(
-          onPressed: () async {},
+          onPressed: () async {
+            // controller.deleteLoan(id);
+          },
           child: const Text(
             "Confirmar",
             style: TextStyle(color: Colors.white),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:emprestimo/app/data/base_url.dart';
 import 'package:emprestimo/app/data/models/item_model.dart';
+import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -52,7 +53,8 @@ class HomeApiClient {
       request.fields.addAll({
         "colaborador_id": colaborador.toString(),
         "itens": json.encode(itens),
-        "assinatura": assinatura
+        "assinatura": assinatura,
+        "usuario_id": UserService.getUserId().toString()
       });
 
       // if (assinatura.path.isNotEmpty) {
