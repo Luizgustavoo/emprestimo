@@ -72,6 +72,8 @@ class HomeApiClient {
       var responseStream = await response.stream.bytesToString();
       var httpResponse = http.Response(responseStream, response.statusCode);
 
+      print(json.decode(httpResponse.body));
+
       if (response.statusCode == 200) {
         return json.decode(httpResponse.body);
       } else if (response.statusCode == 401 &&

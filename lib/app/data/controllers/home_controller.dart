@@ -52,22 +52,16 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-  insertLoan(int collaborator, SignatureController signature) async {
+  insertLoan(int collaborator, String signature) async {
     // if (peopleFormKey.currentState!.validate()) {
 
     // final collaboratorController = Get.put(CollaboratorController());
 
-    final Uint8List? data = await signature.toPngBytes();
-    String? base64Image;
-    if (data != null) {
-      base64Image = base64Encode(data);
-      return base64Image;
-    }
 
     final token = UserService.getToken();
 
     mensagem = await repository.insertLoan(
-        "Bearer $token", collaborator, base64Image!, cartItems);
+        "Bearer $token", collaborator, signature, cartItems);
 
     if (mensagem != null) {
       if (mensagem['message'] == 'success') {

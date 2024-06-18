@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:emprestimo/app/data/controllers/collaborator_controller.dart';
 import 'package:emprestimo/app/data/controllers/home_controller.dart';
 import 'package:emprestimo/app/data/models/collaborator_model.dart';
@@ -223,13 +226,21 @@ class CartView extends GetView<HomeController> {
                           ),
                           onPressed: () async {
                             if (signatureController.isNotEmpty) {
-                              var signature =
-                                  await signatureController.toPngBytes();
-                              if (signature != null) {
-                                // controller.insertLoan(
-                                //     collaboratorController
-                                //         .collaboratorSelected!.value,
-                                //     signature);
+
+                              final Uint8List? data = await signatureController.toPngBytes();
+
+                              String base64Image = "";
+
+                              if (data != null) {
+                                base64Image = base64Encode(data);
+
+                              }
+
+                              if (base64Image.isNotEmpty) {
+                                controller.insertLoan(
+                                    collaboratorController
+                                        .collaboratorSelected!.value,
+                                    base64Image);
                                 Get.back();
                               }
                             }
