@@ -1,18 +1,15 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:emprestimo/app/data/models/item_model.dart';
 import 'package:emprestimo/app/data/repositories/home_repository.dart';
 import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:signature/signature.dart';
 
 class HomeController extends GetxController {
   final TextEditingController dateController = TextEditingController();
 
   RxList<Item> listItems = RxList<Item>([]);
   RxList<Item> cartItems = RxList<Item>([]);
+  final GlobalKey<FormState> loanKey = GlobalKey<FormState>();
 
   RxBool isLoading = true.obs;
 
@@ -20,8 +17,6 @@ class HomeController extends GetxController {
 
   Map<String, dynamic> retorno = {"return": 1, "message": ""};
   dynamic mensagem;
-
-  var photoUrlPath = ''.obs;
 
   void addToCart(Item item) {
     cartItems.add(item);
@@ -52,33 +47,25 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-  insertLoan(int collaborator, String signature) async {
-    // if (peopleFormKey.currentState!.validate()) {
-
-    // final collaboratorController = Get.put(CollaboratorController());
-
-
+  Future<Map<String, dynamic>> insertLoan(
+      int collaborator, String signature) async {
     final token = UserService.getToken();
 
-    mensagem = await repository.insertLoan(
-        "Bearer $token", collaborator, signature, cartItems);
-
-    if (mensagem != null) {
-      if (mensagem['message'] == 'success') {
-        retorno = {"return": 0, "message": "Operação realizada com sucesso!"};
+    if (loanKey.currentState!.validate()) {
+      mensagem = await repository.insertLoan(
+          "Bearer $token", collaborator, signature, cartItems);
+      if (mensagem != null) {
+        if (mensagem['message'] == 'success') {
+          retorno = {"return": 0, "message": "Operação realizada com sucesso!"};
+          getItens();
+        }
+      } else if (mensagem['message'] == 'ja_existe') {
+        retorno = {
+          "return": 1,
+          "message": "Já existe um usuário com esse e-mail!"
+        };
       }
-    } else if (mensagem['message'] == 'ja_existe') {
-      retorno = {
-        "return": 1,
-        "message": "Já existe um usuário com esse e-mail!"
-      };
     }
-    // } else {
-    //   retorno = {
-    //     "return": 1,
-    //     "message": "Preencha todos os campos da família!"
-    //   };
-    // }
     return retorno;
   }
 }

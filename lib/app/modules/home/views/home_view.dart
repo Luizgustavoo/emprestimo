@@ -2,6 +2,7 @@ import 'package:emprestimo/app/data/controllers/home_controller.dart';
 import 'package:emprestimo/app/data/models/item_model.dart';
 import 'package:emprestimo/app/modules/cart/views/list_cart_view.dart';
 import 'package:emprestimo/app/modules/home/widgets/custom_drawer.dart';
+import 'package:emprestimo/app/modules/home/widgets/custom_home_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,29 +56,12 @@ class HomeView extends GetView<HomeController> {
                   child: ListView.builder(
                       shrinkWrap: true,
                       physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(
-                          top: 12, right: 8, left: 8, bottom: 5),
+                      padding: const EdgeInsets.only(right: 8, left: 8),
                       itemCount: controller.listItems.length,
                       itemBuilder: (ctx, index) {
                         Item item = controller.listItems[index];
-                        return Card(
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(12),
-                            title: Text(item.nome!),
-                            subtitle: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Modelo: '),
-                                Text('Cadastrado dia: 31/05/2024'),
-                              ],
-                            ),
-                            leading: IconButton(
-                                onPressed: () {
-                                  controller.addToCart(item);
-                                },
-                                icon: const Icon(Icons.add_rounded)),
-                          ),
-                        );
+                        return CustomHomeCard(
+                            controller: controller, item: item);
                       }),
                 ))
           ],
@@ -199,9 +183,7 @@ class HomeView extends GetView<HomeController> {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8))),
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       child: const Text(
                         'Salvar',
                         style: TextStyle(color: Colors.white),
