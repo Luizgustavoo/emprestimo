@@ -14,130 +14,135 @@ class LoanView extends GetView<LoanController> {
     return Scaffold(
       appBar: AppBar(title: const Text('Listagem de Empréstimos')),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 12, right: 12, left: 12, bottom: 5),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    label: const Text('Pesquise o empréstimo'),
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.search),
-                    )),
+        child: RefreshIndicator(
+          onRefresh: () => controller.getLoans(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 12, right: 12, left: 12, bottom: 5),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      label: const Text('Pesquise o empréstimo'),
+                      suffixIcon: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.search),
+                      )),
+                ),
               ),
-            ),
-            Obx(() => Expanded(
-                  child: ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(
-                          top: 8, right: 8, left: 8, bottom: 5),
-                      itemCount: controller.listLoan.length,
-                      itemBuilder: (ctx, index) {
-                        Loan loan = controller.listLoan[index];
+              Obx(() => Expanded(
+                    child: ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(
+                            top: 8, right: 8, left: 8, bottom: 5),
+                        itemCount: controller.listLoan.length,
+                        itemBuilder: (ctx, index) {
+                          Loan loan = controller.listLoan[index];
 
-                        String dataEmprestimo =
-                            controller.formatApiDate(loan.createdAt!);
-                        return Dismissible(
-                          key: UniqueKey(),
-                          direction: DismissDirection.endToStart,
-                          confirmDismiss: (DismissDirection direction) async {
-                            if (direction == DismissDirection.endToStart) {
-                              showDialog(context, loan.id!);
-                            }
-                            return false;
-                          },
-                          background: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.green.shade500),
-                              child: const Align(
-                                alignment: Alignment.centerRight,
-                                child: Padding(
-                                  padding: EdgeInsets.all(10),
+                          String dataEmprestimo =
+                              controller.formatApiDate(loan.createdAt!);
+                          return Dismissible(
+                            key: UniqueKey(),
+                            direction: DismissDirection.endToStart,
+                            confirmDismiss: (DismissDirection direction) async {
+                              if (direction == DismissDirection.endToStart) {
+                                showDialog(context, loan.id!);
+                              }
+                              return false;
+                            },
+                            background: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.green.shade500),
+                                child: const Align(
+                                  alignment: Alignment.centerRight,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Icon(Icons.check_rounded,
-                                            color: Colors.white, size: 25)
-                                      ],
+                                    padding: EdgeInsets.all(10),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(Icons.check_rounded,
+                                              color: Colors.white, size: 25)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          child: Card(
-                            color: loan.itensAtivos! <= 0
-                                ? Colors.blue.shade100
-                                : Colors.white,
-                            child: ExpansionTile(
-                                dense: true,
-                                tilePadding: const EdgeInsets.all(5),
-                                title: Text(
-                                  'RECEBIDO POR:  ${loan.colaborador!.nome}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('ENTREGUE POR: ${loan.user!.name}'),
-                                    Text('DATA EMP: $dataEmprestimo'),
-                                  ],
-                                ),
-                                leading: loan.itensAtivos! <= 0
-                                    ? const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Icon(Icons.check_circle),
-                                      )
-                                    : IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.edit)),
-                                children: loan.itens!.map((item) {
-                                  String dataDev = item
-                                              .itensEmprestimo!.dataDevolucao !=
-                                          null
-                                      ? controller.formatApiDate(
-                                          item.itensEmprestimo!.dataDevolucao)
-                                      : '';
-                                  return ListTile(
-                                    dense: true,
-                                    title: Text(
-                                      'ITEM: ${item.nome}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54),
-                                    ),
-                                    subtitle: Text(
-                                      'DATA DEV: $dataDev',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54),
-                                    ),
-                                    trailing: item
-                                                .itensEmprestimo!.situacaoId ==
-                                            2
-                                        ? const SizedBox()
-                                        : IconButton(
-                                            onPressed: () {
-                                              controller.deleteItemLoan(
-                                                  item.id!, loan.id!);
-                                            },
-                                            icon: const Icon(CupertinoIcons
-                                                .arrowshape_turn_up_left_2_fill)),
-                                  );
-                                }).toList()),
-                          ),
-                        );
-                      }),
-                ))
-          ],
+                            child: Card(
+                              color: loan.itensAtivos! <= 0
+                                  ? Colors.blue.shade100
+                                  : Colors.white,
+                              child: ExpansionTile(
+                                  dense: true,
+                                  tilePadding: const EdgeInsets.all(5),
+                                  title: Text(
+                                    'RECEBIDO POR:  ${loan.colaborador!.nome}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('ENTREGUE POR: ${loan.user!.name}'),
+                                      Text('DATA EMP: $dataEmprestimo'),
+                                    ],
+                                  ),
+                                  leading: loan.itensAtivos! <= 0
+                                      ? const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Icon(Icons.check_circle),
+                                        )
+                                      : IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.edit)),
+                                  children: loan.itens!.map((item) {
+                                    String dataDev = item.itensEmprestimo!
+                                                .dataDevolucao !=
+                                            null
+                                        ? controller.formatApiDate(
+                                            item.itensEmprestimo!.dataDevolucao)
+                                        : '';
+                                    return ListTile(
+                                      dense: true,
+                                      title: Text(
+                                        'ITEM: ${item.nome}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black54),
+                                      ),
+                                      subtitle: Text(
+                                        'DATA DEV: $dataDev',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black54),
+                                      ),
+                                      trailing: item.itensEmprestimo!
+                                                  .situacaoId ==
+                                              2
+                                          ? const SizedBox()
+                                          : IconButton(
+                                              onPressed: () {
+                                                controller.deleteItemLoan(
+                                                    item.id!, loan.id!);
+                                              },
+                                              icon: const Icon(CupertinoIcons
+                                                  .arrowshape_turn_up_left_2_fill)),
+                                    );
+                                  }).toList()),
+                            ),
+                          );
+                        }),
+                  ))
+            ],
+          ),
         ),
       ),
     );

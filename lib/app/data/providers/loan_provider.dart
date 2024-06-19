@@ -21,7 +21,9 @@ class LoanApiClient {
           "Authorization": token,
         },
       );
-      print(json.decode(response.body));
+      print(response.statusCode);
+      print(json.decode(response.body)['data']);
+
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401 &&
