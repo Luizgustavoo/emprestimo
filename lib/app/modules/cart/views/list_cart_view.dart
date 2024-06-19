@@ -6,7 +6,6 @@ import 'package:emprestimo/app/data/controllers/home_controller.dart';
 import 'package:emprestimo/app/data/models/collaborator_model.dart';
 import 'package:emprestimo/app/modules/cart/widgets/custom_cart_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:signature/signature.dart';

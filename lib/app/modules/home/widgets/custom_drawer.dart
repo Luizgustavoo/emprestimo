@@ -1,3 +1,4 @@
+import 'package:emprestimo/app/data/controllers/collaborator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +28,9 @@ class CustomDrawer extends StatelessWidget {
               children: [
                 CustomDrawerItem(
                   onTap: () {
+                    final collaboratoController =
+                        Get.put(CollaboratorController());
+                    collaboratoController.getCollaborators();
                     Get.toNamed('/collaborator');
                   },
                   title: 'Listagem de Colaboradores',

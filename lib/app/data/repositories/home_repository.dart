@@ -29,4 +29,31 @@ class HomeRepository {
       Exception(e);
     }
   }
+
+  insertItem(String token, Item item) async {
+    try {
+      var response = await apiClient.insertItem(token, item);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  updateItem(String token, Item item) async {
+    try {
+      var response = await apiClient.updateItem(token, item);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  deleteItem(String token, Item item) async {
+    try {
+      var response = await apiClient.deleteItem(token, item);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

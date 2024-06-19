@@ -7,6 +7,11 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   final TextEditingController dateController = TextEditingController();
 
+  final TextEditingController txtNomeController = TextEditingController();
+  final TextEditingController txtMarcaController = TextEditingController();
+  final TextEditingController txtModeloController = TextEditingController();
+  final GlobalKey<FormState> itemKey = GlobalKey<FormState>();
+
   RxList<Item> listItems = RxList<Item>([]);
   RxList<Item> cartItems = RxList<Item>([]);
   final GlobalKey<FormState> loanKey = GlobalKey<FormState>();
@@ -33,6 +38,8 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     getItens();
+    txtMarcaController.text = "SM";
+    txtModeloController.text = "SM";
     super.onInit();
   }
 
@@ -67,5 +74,65 @@ class HomeController extends GetxController {
       }
     }
     return retorno;
+  }
+
+  clearItem() {
+    txtNomeController.text = "";
+    txtMarcaController.text = "SM";
+    txtModeloController.text = "SM";
+  }
+
+  Future<Map<String, dynamic>> saveItem() async {
+    if (itemKey.currentState!.validate()) {
+      Item item = Item(
+          nome: txtNomeController.text,
+          marca: txtMarcaController.text,
+          modelo: txtModeloController.text);
+
+      final token = UserService.getToken();
+
+      retorno = await repository.insertItem("Bearer $token", item);
+    }
+
+    clearItem();
+    getItens();
+
+    return retorno;
+  }
+
+  Future<Map<String, dynamic>> updateItem(int id) async {
+    if (itemKey.currentState!.validate()) {
+      Item item = Item(
+          id: id,
+          nome: txtNomeController.text,
+          marca: txtMarcaController.text,
+          modelo: txtModeloController.text);
+
+      final token = UserService.getToken();
+
+      retorno = await repository.updateItem("Bearer $token", item);
+    }
+
+    clearItem();
+    getItens();
+
+    return retorno;
+  }
+
+  Future<Map<String, dynamic>> deleteItem(Item item) async {
+    final token = UserService.getToken();
+
+    retorno = await repository.deleteItem("Bearer $token", item);
+
+    clearItem();
+    getItens();
+
+    return retorno;
+  }
+
+  fillInFieldsItem(Item item) {
+    txtNomeController.text = item.nome!;
+    txtMarcaController.text = item.marca!;
+    txtMarcaController.text = item.modelo!;
   }
 }

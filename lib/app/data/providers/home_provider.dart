@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:emprestimo/app/data/base_url.dart';
 import 'package:emprestimo/app/data/models/item_model.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,100 @@ class HomeApiClient {
           content: const Text(
               'O token de autenticação expirou, faça login novamente.'),
         );
+        var box = GetStorage('credenciado');
+        box.erase();
+        Get.offAllNamed('/login');
+      }
+    } catch (err) {
+      Exception(err);
+    }
+    return null;
+  }
+
+  insertItem(String token, Item item) async {
+    try {
+      var itemUrl = Uri.parse('$baseUrl/v1/itens');
+
+      var request = {
+        "nome": item.nome.toString(),
+        "marca": item.marca.toString(),
+        "modelo": item.modelo.toString(),
+        'status': '1'
+      };
+
+      var response = await httpClient.post(
+        itemUrl,
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+        body: request,
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else if (response.statusCode == 401 &&
+          json.decode(response.body)['message'] == "Token has expired") {
+        var box = GetStorage('credenciado');
+        box.erase();
+        Get.offAllNamed('/login');
+      }
+    } catch (err) {
+      Exception(err);
+    }
+    return null;
+  }
+
+  updateItem(String token, Item item) async {
+    try {
+      var itemUrl = Uri.parse('$baseUrl/v1/itens/${item.id}');
+
+      var request = {
+        "nome": item.nome.toString(),
+        "marca": item.marca.toString(),
+        "modelo": item.modelo.toString(),
+        'status': '1'
+      };
+
+      var response = await httpClient.put(
+        itemUrl,
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+        body: request,
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else if (response.statusCode == 401 &&
+          json.decode(response.body)['message'] == "Token has expired") {
+        var box = GetStorage('credenciado');
+        box.erase();
+        Get.offAllNamed('/login');
+      }
+    } catch (err) {
+      Exception(err);
+    }
+    return null;
+  }
+
+  deleteItem(String token, Item item) async {
+    try {
+      var itemUrl = Uri.parse('$baseUrl/v1/itens/${item.id}');
+
+      var response = await httpClient.delete(
+        itemUrl,
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else if (response.statusCode == 401 &&
+          json.decode(response.body)['message'] == "Token has expired") {
         var box = GetStorage('credenciado');
         box.erase();
         Get.offAllNamed('/login');
