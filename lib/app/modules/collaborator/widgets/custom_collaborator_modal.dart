@@ -79,12 +79,12 @@ class CustomCollaboratorModal extends StatelessWidget {
                     hint: const Text('Selecione uma opção'),
                     value: controller.txtTipoController.value.isEmpty
                         ? null
-                        : controller.txtTipoController.value,
+                        : controller.txtTipoController.value.toString(),
                     onChanged: (value) {
                       controller.txtTipoController.value = value!;
                     },
                     validator: (value) {
-                      if (value == null) {
+                      if (value == null || value == 'null' || value.isEmpty) {
                         return 'Por favor, selecione uma opção';
                       }
                       return null;
@@ -123,7 +123,6 @@ class CustomCollaboratorModal extends StatelessWidget {
                                   .updateCollaborator(collaborator!.id!)
                               : await controller.saveCollaborator();
 
-                          print(retorno);
                           if (retorno != null && retorno['message'] != null) {
                             Get.back();
                             if (retorno['message'] == 'success') {
@@ -141,12 +140,6 @@ class CustomCollaboratorModal extends StatelessWidget {
                                   duration: const Duration(seconds: 2),
                                   snackPosition: SnackPosition.BOTTOM);
                             }
-                          } else {
-                            Get.snackbar('Falha!', 'Nenhum retorno informado!',
-                                backgroundColor: Colors.red,
-                                colorText: Colors.white,
-                                duration: const Duration(seconds: 2),
-                                snackPosition: SnackPosition.BOTTOM);
                           }
                         },
                         child: Text(
