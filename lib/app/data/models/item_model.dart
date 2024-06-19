@@ -1,3 +1,5 @@
+import 'package:emprestimo/app/data/models/item_loan_model.dart';
+
 class Item {
   int? id;
   String? nome;
@@ -7,14 +9,18 @@ class Item {
   String? createdAt;
   String? updatedAt;
 
-  Item(
-      {this.id,
-      this.nome,
-      this.marca,
-      this.modelo,
-      this.status,
-      this.createdAt,
-      this.updatedAt});
+  ItemLoan? itensEmprestimo;
+
+  Item({
+    this.id,
+    this.nome,
+    this.marca,
+    this.modelo,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.itensEmprestimo,
+  });
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,6 +30,8 @@ class Item {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    itensEmprestimo =
+        json['pivot'] != null ? ItemLoan.fromJson(json['pivot']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +43,9 @@ class Item {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    if (itensEmprestimo != null) {
+      data['pivot'] = itensEmprestimo!.toJson();
+    }
     return data;
   }
 }

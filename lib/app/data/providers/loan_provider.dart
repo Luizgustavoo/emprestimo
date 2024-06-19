@@ -21,6 +21,7 @@ class LoanApiClient {
           "Authorization": token,
         },
       );
+      print(json.decode(response.body));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401 &&
@@ -40,7 +41,7 @@ class LoanApiClient {
     return null;
   }
 
-  deleteItemLoan(String token, Loan loan) async {
+  deleteItemLoan(String token, int itemId, Loan loan) async {
     try {
       Uri loanUrl;
       String url = '$baseUrl/v1/itensemprestimo/${loan.id}';
@@ -49,9 +50,39 @@ class LoanApiClient {
         "Accept": "application/json",
         "Authorization": token,
       }, body: {
-        "id": loan.id.toString()
+        "item_id": itemId.toString(),
+        "emprestimo_id": loan.id.toString(),
       });
-      print(json.decode(response.body));
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else if (response.statusCode == 401 &&
+          json.decode(response.body)['message'] == "Token has expired") {
+        Get.defaultDialog(
+          title: "Expirou",
+          content: const Text(
+              'O token de autenticação expirou, faça login novamente.'),
+        );
+        var box = GetStorage('emp');
+        box.erase();
+        Get.offAllNamed('/login');
+      }
+    } catch (err) {
+      //
+    }
+    return null;
+  }
+
+  deleteLoan(String token, Loan loan) async {
+    try {
+      Uri loanUrl;
+      String url = '$baseUrl/v1/emprestimo/devolver';
+      loanUrl = Uri.parse(url);
+      var response = await httpClient.post(loanUrl, headers: {
+        "Accept": "application/json",
+        "Authorization": token,
+      }, body: {
+        "emprestimo_id": loan.id.toString(),
+      });
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401 &&

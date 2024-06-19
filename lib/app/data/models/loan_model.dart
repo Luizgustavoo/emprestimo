@@ -11,6 +11,7 @@ class Loan {
   Collaborator? colaborador;
   User? user;
   List<Item>? itens;
+  int? itensAtivos;
 
   Loan(
       {this.id,
@@ -20,7 +21,8 @@ class Loan {
       this.updatedAt,
       this.colaborador,
       this.user,
-      this.itens});
+      this.itens,
+      this.itensAtivos});
 
   Loan.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -28,6 +30,7 @@ class Loan {
     assinatura = json['assinatura'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    itensAtivos = json['itens_ativos'];
     colaborador = json['colaborador'] != null
         ? Collaborator.fromJson(json['colaborador'])
         : null;
@@ -47,6 +50,7 @@ class Loan {
     data['assinatura'] = assinatura;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['itens_ativos'] = itensAtivos;
     if (colaborador != null) {
       data['colaborador'] = colaborador!.toJson();
     }

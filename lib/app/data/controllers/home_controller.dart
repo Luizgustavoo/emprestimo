@@ -24,6 +24,15 @@ class HomeController extends GetxController {
   dynamic mensagem;
 
   void addToCart(Item item) {
+    if (cartItems.any((element) => element.id == item.id)) {
+      Get.snackbar('Atenção', 'Este item já está no carrinho.',
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 2),
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
     cartItems.add(item);
     listItems.remove(item);
   }
@@ -48,9 +57,7 @@ class HomeController extends GetxController {
     try {
       final token = UserService.getToken();
       listItems.value = await repository.getAll("Bearer $token");
-    } catch (e) {
-      //
-    }
+    } catch (e) {}
     isLoading.value = false;
   }
 

@@ -73,35 +73,64 @@ class LoanView extends GetView<LoanController> {
                             ),
                           ),
                           child: Card(
+                            color: loan.itensAtivos! <= 0
+                                ? Colors.blue.shade100
+                                : Colors.white,
                             child: ExpansionTile(
                                 dense: true,
                                 tilePadding: const EdgeInsets.all(5),
                                 title: Text(
-                                    'Recebido por:  ${loan.colaborador!.nome}'),
+                                  'RECEBIDO POR:  ${loan.colaborador!.nome}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Entregue por: ${loan.user!.name}'),
-                                    Text('Data Emp: $dataEmprestimo'),
-                                    const Text('Data Dev: '),
+                                    Text('ENTREGUE POR: ${loan.user!.name}'),
+                                    Text('DATA EMP: $dataEmprestimo'),
                                   ],
                                 ),
-                                leading: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.edit)),
+                                leading: loan.itensAtivos! <= 0
+                                    ? const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(Icons.check_circle),
+                                      )
+                                    : IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.edit)),
                                 children: loan.itens!.map((item) {
-                                  return Card(
-                                    child: ListTile(
-                                      dense: true,
-                                      title: Text('ITEM: ${item.nome}'),
-                                      subtitle: Text('MODELO: ${item.modelo}'),
-                                      trailing: IconButton(
-                                          onPressed: () {
-                                            controller.deleteItemLoan(item.id!);
-                                          },
-                                          icon: const Icon(CupertinoIcons
-                                              .arrowshape_turn_up_left_2_fill)),
+                                  String dataDev = item
+                                              .itensEmprestimo!.dataDevolucao !=
+                                          null
+                                      ? controller.formatApiDate(
+                                          item.itensEmprestimo!.dataDevolucao)
+                                      : '';
+                                  return ListTile(
+                                    dense: true,
+                                    title: Text(
+                                      'ITEM: ${item.nome}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54),
                                     ),
+                                    subtitle: Text(
+                                      'DATA DEV: $dataDev',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54),
+                                    ),
+                                    trailing: item
+                                                .itensEmprestimo!.situacaoId ==
+                                            2
+                                        ? const SizedBox()
+                                        : IconButton(
+                                            onPressed: () {
+                                              controller.deleteItemLoan(
+                                                  item.id!, loan.id!);
+                                            },
+                                            icon: const Icon(CupertinoIcons
+                                                .arrowshape_turn_up_left_2_fill)),
                                   );
                                 }).toList()),
                           ),
@@ -139,7 +168,21 @@ class LoanView extends GetView<LoanController> {
         ),
         ElevatedButton(
           onPressed: () async {
-            // controller.deleteLoan(id);
+            Map<String, dynamic> retorno = await controller.deleteLoan(id);
+
+            if (retorno['return'] == 0) {
+              Get.back();
+            }
+
+            Get.snackbar(
+              snackPosition: SnackPosition.BOTTOM,
+              duration: const Duration(milliseconds: 1500),
+              retorno['return'] == 0 ? 'Sucesso' : "Falha",
+              retorno['message'],
+              backgroundColor:
+                  retorno['return'] == 0 ? Colors.green : Colors.red,
+              colorText: Colors.white,
+            );
           },
           child: const Text(
             "Confirmar",

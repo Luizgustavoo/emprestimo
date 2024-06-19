@@ -17,13 +17,23 @@ class LoanRepository {
     return list;
   }
 
-  deleteItemLoan(String token, Loan loan) async {
+  deleteItemLoan(String token, int itemId, Loan loan) async {
     try {
-      var response = await apiClient.deleteItemLoan(token, loan);
+      var response = await apiClient.deleteItemLoan(token, itemId, loan);
 
       return response;
     } catch (e) {
-      print(e);
+      Exception(e);
+    }
+  }
+
+  deleteLoan(String token, Loan loan) async {
+    try {
+      var response = await apiClient.deleteLoan(token, loan);
+
+      return response;
+    } catch (e) {
+      Exception(e);
     }
   }
 }

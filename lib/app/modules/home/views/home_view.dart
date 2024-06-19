@@ -39,33 +39,36 @@ class HomeView extends GetView<HomeController> {
         ),
       ]),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 12, right: 12, left: 12, bottom: 5),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    label: const Text('Pesquise o equipamento'),
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.search),
-                    )),
+        child: RefreshIndicator(
+          onRefresh: () => controller.getItens(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 12, right: 12, left: 12, bottom: 5),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      label: const Text('Pesquise o equipamento'),
+                      suffixIcon: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.search),
+                      )),
+                ),
               ),
-            ),
-            Obx(() => Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(right: 8, left: 8),
-                      itemCount: controller.listItems.length,
-                      itemBuilder: (ctx, index) {
-                        Item item = controller.listItems[index];
-                        return CustomHomeCard(
-                            controller: controller, item: item);
-                      }),
-                ))
-          ],
+              Obx(() => Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(right: 8, left: 8),
+                        itemCount: controller.listItems.length,
+                        itemBuilder: (ctx, index) {
+                          Item item = controller.listItems[index];
+                          return CustomHomeCard(
+                              controller: controller, item: item);
+                        }),
+                  ))
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

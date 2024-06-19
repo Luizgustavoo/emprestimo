@@ -36,12 +36,24 @@ class LoanController extends GetxController {
     isLoading.value = false;
   }
 
-  deleteItemLoan(int id) async {
+  deleteItemLoan(int itemId, int loanId) async {
     Loan loan = Loan(
-      id: id,
+      id: loanId,
     );
     final token = UserService.getToken();
-    mensagem = await repository.deleteItemLoan("Bearer $token", loan);
+    mensagem = await repository.deleteItemLoan("Bearer $token", itemId, loan);
+
+    getLoans();
+
+    return mensagem;
+  }
+
+  deleteLoan(int loanId) async {
+    Loan loan = Loan(
+      id: loanId,
+    );
+    final token = UserService.getToken();
+    mensagem = await repository.deleteLoan("Bearer $token", loan);
 
     getLoans();
 
