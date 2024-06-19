@@ -16,11 +16,11 @@ class CollaboratorController extends GetxController {
 
   RxString txtTipoController = "".obs;
   RxList<String>? typeCollaborators =
-      ['professor', 'administrativo', 'cozinha', 'limpeza', 'visitante'].obs;
+      ['Professor(a)', 'Administrativo', 'Cozinha', 'Limpeza', 'Visitante'].obs;
 
   final GlobalKey<FormState> collaboratorKey = GlobalKey<FormState>();
 
-  Map<String, dynamic> retorno = {"return": 1, "message": ""};
+  late Map<String, dynamic> retorno;
   dynamic mensagem;
 
   @override
@@ -46,6 +46,7 @@ class CollaboratorController extends GetxController {
 
   Future<Map<String, dynamic>> saveCollaborator() async {
     if (collaboratorKey.currentState!.validate()) {
+      print(txtTipoController.value);
       Collaborator collaborator = Collaborator(
           nome: txtNomeController.text, tipo: txtTipoController.value);
 
@@ -53,10 +54,10 @@ class CollaboratorController extends GetxController {
 
       retorno =
           await repository.insertCollaborators("Bearer $token", collaborator);
-    }
 
-    clear();
-    getCollaborators();
+      clear();
+      getCollaborators();
+    }
 
     return retorno;
   }
@@ -73,10 +74,10 @@ class CollaboratorController extends GetxController {
 
       retorno =
           await repository.updateCollaborators("Bearer $token", collaborator);
-    }
 
-    clear();
-    getCollaborators();
+      clear();
+      getCollaborators();
+    }
 
     return retorno;
   }
@@ -97,5 +98,6 @@ class CollaboratorController extends GetxController {
   fillInFieldsItem(Collaborator collaborator) {
     txtNomeController.text = collaborator.nome!;
     txtTipoController.value = collaborator.tipo!;
+    print(txtTipoController.value);
   }
 }

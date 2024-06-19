@@ -20,7 +20,7 @@ class HomeController extends GetxController {
 
   final repository = Get.find<HomeRepository>();
 
-  Map<String, dynamic> retorno = {"return": 1, "message": ""};
+  late Map<String, dynamic> retorno;
   dynamic mensagem;
 
   void addToCart(Item item) {
