@@ -1,4 +1,5 @@
 import 'package:emprestimo/app/data/controllers/collaborator_controller.dart';
+import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -62,11 +63,9 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Sair do aplicativo'),
             onTap: () {
-              // Ação para sair do aplicativo
-              // Pode ser navegação, logout ou outra ação relevante
-              Get.back(); // Fecha o drawer
-              // Adicione a lógica de sair do aplicativo, por exemplo:
-              // SystemNavigator.pop(); // Sair do aplicativo
+              if (UserService.clearBox()) {
+                Get.offAllNamed('/login');
+              }
             },
           ),
         ],

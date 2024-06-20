@@ -3,6 +3,17 @@ import 'package:get_storage/get_storage.dart';
 class UserService {
   static final storage = GetStorage('emp');
 
+  static bool clearBox() {
+    try {
+      storage.remove('emp');
+      storage.erase();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   static bool existUser() {
     return storage.read('auth') != null;
   }
