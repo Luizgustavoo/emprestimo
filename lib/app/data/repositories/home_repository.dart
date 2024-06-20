@@ -19,10 +19,10 @@ class HomeRepository {
   }
 
   insertLoan(String token, int colaborador, String assinatura,
-      List<Item>? items) async {
+      List<Item>? items, String? date) async {
     try {
-      var response =
-          await apiClient.insertLoan(token, colaborador, assinatura, items!);
+      var response = await apiClient.insertLoan(
+          token, colaborador, assinatura, items!, date!);
 
       return response;
     } catch (e) {

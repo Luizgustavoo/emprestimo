@@ -149,7 +149,7 @@ class CartView extends GetView<HomeController> {
                     }),
                     const SizedBox(height: 10),
                     TextFormField(
-                      controller: dateController,
+                      controller: controller.dateController,
                       decoration: InputDecoration(
                         labelText: 'Data e Hora',
                         border: OutlineInputBorder(
@@ -179,7 +179,7 @@ class CartView extends GetView<HomeController> {
                               pickedTime.hour,
                               pickedTime.minute,
                             );
-                            dateController.text =
+                            controller.dateController.text =
                                 DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
                           }
                         }

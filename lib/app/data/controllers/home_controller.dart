@@ -3,9 +3,11 @@ import 'package:emprestimo/app/data/repositories/home_repository.dart';
 import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController dateController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()));
 
   final TextEditingController txtNomeController = TextEditingController();
   final TextEditingController txtMarcaController = TextEditingController();
@@ -66,8 +68,8 @@ class HomeController extends GetxController {
     final token = UserService.getToken();
 
     if (loanKey.currentState!.validate()) {
-      mensagem = await repository.insertLoan(
-          "Bearer $token", collaborator, signature, cartItems);
+      mensagem = await repository.insertLoan("Bearer $token", collaborator,
+          signature, cartItems, dateController.text);
       if (mensagem != null) {
         if (mensagem['message'] == 'success') {
           retorno = {"return": 0, "message": "Operação realizada com sucesso!"};
