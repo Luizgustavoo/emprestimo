@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomHomeModal extends StatelessWidget {
-  CustomHomeModal(
+  const CustomHomeModal(
       {super.key,
       required this.controller,
       required this.tituloModal,
@@ -33,7 +33,7 @@ class CustomHomeModal extends StatelessWidget {
           children: [
             Text(
               tituloModal,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20),
             TextFormField(
@@ -132,7 +132,6 @@ class CustomHomeModal extends StatelessWidget {
                           ? await controller.updateItem(item!.id!)
                           : await controller.saveItem();
 
-                      print(retorno);
                       if (retorno != null && retorno['message'] != null) {
                         Get.back();
                         if (retorno['message'] == 'success') {
@@ -160,7 +159,7 @@ class CustomHomeModal extends StatelessWidget {
                     },
                     child: Text(
                       alterar ? 'Alterar' : 'Salvar',
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

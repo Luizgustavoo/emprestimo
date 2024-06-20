@@ -59,7 +59,9 @@ class HomeController extends GetxController {
     try {
       final token = UserService.getToken();
       listItems.value = await repository.getAll("Bearer $token");
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
     isLoading.value = false;
   }
 

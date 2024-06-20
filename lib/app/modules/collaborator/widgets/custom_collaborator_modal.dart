@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomCollaboratorModal extends StatelessWidget {
-  CustomCollaboratorModal(
+  const CustomCollaboratorModal(
       {super.key,
       required this.controller,
       required this.tituloModal,
@@ -38,7 +38,7 @@ class CustomCollaboratorModal extends StatelessWidget {
               children: [
                 Text(
                   tituloModal,
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -144,7 +144,7 @@ class CustomCollaboratorModal extends StatelessWidget {
                         },
                         child: Text(
                           alterar ? 'Alterar' : 'Salvar',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),

@@ -175,17 +175,15 @@ class LoanView extends GetView<LoanController> {
           onPressed: () async {
             Map<String, dynamic> retorno = await controller.deleteLoan(id);
 
-            if (retorno['return'] == 0) {
-              Get.back();
-            }
+            Get.back();
 
             Get.snackbar(
               snackPosition: SnackPosition.BOTTOM,
               duration: const Duration(milliseconds: 1500),
-              retorno['return'] == 0 ? 'Sucesso' : "Falha",
-              retorno['message'],
+              retorno['message'] == "success" ? 'Sucesso' : "Falha",
+              'Operação realizada com sucesso!',
               backgroundColor:
-                  retorno['return'] == 0 ? Colors.green : Colors.red,
+                  retorno['message'] == "success" ? Colors.green : Colors.red,
               colorText: Colors.white,
             );
           },

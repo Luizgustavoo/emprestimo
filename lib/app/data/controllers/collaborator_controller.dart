@@ -23,11 +23,6 @@ class CollaboratorController extends GetxController {
   late Map<String, dynamic> retorno;
   dynamic mensagem;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   Future<void> getCollaborators() async {
     isLoading.value = true;
     try {
@@ -46,7 +41,6 @@ class CollaboratorController extends GetxController {
 
   Future<Map<String, dynamic>> saveCollaborator() async {
     if (collaboratorKey.currentState!.validate()) {
-      print(txtTipoController.value);
       Collaborator collaborator = Collaborator(
           nome: txtNomeController.text, tipo: txtTipoController.value);
 
@@ -98,6 +92,5 @@ class CollaboratorController extends GetxController {
   fillInFieldsItem(Collaborator collaborator) {
     txtNomeController.text = collaborator.nome!;
     txtTipoController.value = collaborator.tipo!;
-    print(txtTipoController.value);
   }
 }

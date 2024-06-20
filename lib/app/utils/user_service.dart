@@ -9,7 +9,6 @@ class UserService {
       storage.erase();
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
   }

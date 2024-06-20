@@ -11,7 +11,6 @@ class AuthApiClient {
     try {
       var response = await httpClient
           .post(loginUrl, body: {'email': email, 'password': password});
-      print(json.decode(response.body));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401) {

@@ -61,8 +61,6 @@ class CollaboratorApiClient {
         },
         body: request,
       );
-
-      print(json.decode(response.body));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401 &&

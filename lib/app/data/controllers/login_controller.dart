@@ -26,7 +26,6 @@ class LoginController extends GetxController {
       if (auth != null) {
         // Salva os dados do usuário no armazenamento
         await box.write('auth', auth?.toJson());
-        print('Token salvo: ${box.read('auth')}');
         Get.offAllNamed('/home');
       } else {
         showErrorSnackbar.value = true;

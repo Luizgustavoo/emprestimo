@@ -52,14 +52,14 @@ class HomeApiClient {
 
       var request = http.MultipartRequest('POST', loanUrl);
 
-      String data_emprestimo = CustomServices.dateTimePtBr(date.toString());
+      String dataEmprestimo = CustomServices.dateTimePtBr(date.toString());
 
       request.fields.addAll({
         "colaborador_id": colaborador.toString(),
         "itens": json.encode(itens),
         "assinatura": assinatura,
         "usuario_id": UserService.getUserId().toString(),
-        "data_emprestimo": data_emprestimo.toString()
+        "data_emprestimo": dataEmprestimo.toString()
       });
 
       request.headers.addAll({
@@ -71,8 +71,6 @@ class HomeApiClient {
 
       var responseStream = await response.stream.bytesToString();
       var httpResponse = http.Response(responseStream, response.statusCode);
-
-      print(json.decode(httpResponse.body));
 
       if (response.statusCode == 200) {
         return json.decode(httpResponse.body);

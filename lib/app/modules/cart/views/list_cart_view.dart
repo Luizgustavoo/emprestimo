@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -58,11 +60,11 @@ class CartView extends GetView<HomeController> {
   }
 
   void showLoanModal(BuildContext context) {
-    final DateTime now = DateTime.now();
+    // final DateTime now = DateTime.now();
     final collaboratorController = Get.put(CollaboratorController());
-    final TextEditingController dateController = TextEditingController(
-      text: DateFormat('dd/MM/yyyy HH:mm').format(now),
-    );
+    // final TextEditingController dateController = TextEditingController(
+    //   text: DateFormat('dd/MM/yyyy HH:mm').format(now),
+    // );
 
     final SignatureController signatureController = SignatureController(
       penStrokeWidth: 3,
