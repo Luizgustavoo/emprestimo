@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:emprestimo/app/data/base_url.dart';
 import 'package:emprestimo/app/data/models/item_model.dart';
+import 'package:emprestimo/app/utils/custom_services.dart';
 import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,26 +45,22 @@ class HomeApiClient {
     return null;
   }
 
-  insertLoan(String token, int colaborador, String assinatura,
-      List<Item> itens) async {
+  insertLoan(String token, int colaborador, String assinatura, List<Item> itens,
+      String date) async {
     try {
       var loanUrl = Uri.parse('$baseUrl/v1/emprestimo');
 
       var request = http.MultipartRequest('POST', loanUrl);
 
+      String data_emprestimo = CustomServices.dateTimePtBr(date.toString());
+
       request.fields.addAll({
         "colaborador_id": colaborador.toString(),
         "itens": json.encode(itens),
         "assinatura": assinatura,
-        "usuario_id": UserService.getUserId().toString()
+        "usuario_id": UserService.getUserId().toString(),
+        "data_emprestimo": data_emprestimo.toString()
       });
-
-      // if (assinatura.path.isNotEmpty) {
-      //   request.files.add(await http.MultipartFile.fromPath(
-      //     'assinatura',
-      //     assinatura.path,
-      //   ));
-      // }
 
       request.headers.addAll({
         'Accept': 'application/json',

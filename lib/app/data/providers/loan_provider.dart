@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 class LoanApiClient {
   final http.Client httpClient = http.Client();
+
   getAllLoans(String token) async {
     try {
       Uri loanUrl;

@@ -8,6 +8,7 @@ class Loan {
   String? assinatura;
   String? createdAt;
   String? updatedAt;
+  String? dataEmprestimo;
   Collaborator? colaborador;
   User? user;
   List<Item>? itens;
@@ -19,6 +20,7 @@ class Loan {
       this.assinatura,
       this.createdAt,
       this.updatedAt,
+      this.dataEmprestimo,
       this.colaborador,
       this.user,
       this.itens,
@@ -30,6 +32,7 @@ class Loan {
     assinatura = json['assinatura'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    dataEmprestimo = json['data_emprestimo'];
     itensAtivos = json['itens_ativos'];
     colaborador = json['colaborador'] != null
         ? Collaborator.fromJson(json['colaborador'])
@@ -50,6 +53,7 @@ class Loan {
     data['assinatura'] = assinatura;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['data_emprestimo'] = dataEmprestimo;
     data['itens_ativos'] = itensAtivos;
     if (colaborador != null) {
       data['colaborador'] = colaborador!.toJson();
