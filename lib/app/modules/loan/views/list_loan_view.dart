@@ -22,12 +22,14 @@ class LoanView extends GetView<LoanController> {
                 padding: const EdgeInsets.only(
                     top: 12, right: 12, left: 12, bottom: 5),
                 child: TextFormField(
+                  controller: controller.searchController,
                   decoration: InputDecoration(
                       label: const Text('Pesquise o empréstimo'),
                       suffixIcon: IconButton(
-                        onPressed: () {},
+                        onPressed: () => controller.filterLoans(),
                         icon: const Icon(Icons.search),
                       )),
+                  onChanged: (value) => controller.filterLoans(),
                 ),
               ),
               Obx(() => Expanded(
@@ -43,7 +45,9 @@ class LoanView extends GetView<LoanController> {
                               controller.formatApiDate(loan.createdAt!);
                           return Dismissible(
                             key: UniqueKey(),
-                            direction: DismissDirection.endToStart,
+                            direction: loan.itensAtivos! <= 0
+                                ? DismissDirection.none
+                                : DismissDirection.endToStart,
                             confirmDismiss: (DismissDirection direction) async {
                               if (direction == DismissDirection.endToStart) {
                                 showDialog(context, loan.id!);

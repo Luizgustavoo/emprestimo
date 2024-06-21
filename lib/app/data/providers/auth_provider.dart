@@ -9,8 +9,13 @@ class AuthApiClient {
   getLogin(String email, String password) async {
     var loginUrl = Uri.parse('$baseUrl/login');
     try {
-      var response = await httpClient
-          .post(loginUrl, body: {'email': email, 'password': password});
+      var response = await httpClient.post(
+        loginUrl,
+        body: {'email': email, 'password': password},
+        headers: {
+          "Accept": "application/json",
+        },
+      );
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401) {

@@ -242,7 +242,7 @@ class CartView extends GetView<HomeController> {
 
                                   if (retorno['return'] == 0) {
                                     controller.cartItems.clear();
-                                    Get.toNamed('/');
+                                    Get.offAllNamed('/');
                                   }
 
                                   Get.snackbar(

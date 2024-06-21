@@ -1,12 +1,14 @@
 import 'package:emprestimo/app/data/models/loan_model.dart';
 import 'package:emprestimo/app/data/repositories/loan_repository.dart';
 import 'package:emprestimo/app/utils/user_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class LoanController extends GetxController {
   RxList<Loan> listLoan = RxList<Loan>([]);
   RxBool isLoading = true.obs;
+  TextEditingController searchController = TextEditingController();
 
   final repository = Get.find<LoanRepository>();
 
@@ -58,5 +60,28 @@ class LoanController extends GetxController {
     getLoans();
 
     return mensagem;
+  }
+
+  void filterLoans() {
+    String query = searchController.text.toLowerCase();
+    if (query.isEmpty) {
+      listLoan.assignAll(listLoan);
+    } else {
+      listLoan.assignAll(listLoan.where((loan) {
+        bool containsColaborador =
+            loan.colaborador?.nome?.toLowerCase().contains(query) ?? false;
+        bool containsUser =
+            loan.user?.name?.toLowerCase().contains(query) ?? false;
+        bool containsDate =
+            loan.createdAt?.toLowerCase().contains(query) ?? false;
+        bool containsItem = loan.itens
+                ?.any((item) => item.nome!.toLowerCase().contains(query)) ??
+            false;
+        return containsColaborador ||
+            containsUser ||
+            containsDate ||
+            containsItem;
+      }).toList());
+    }
   }
 }
