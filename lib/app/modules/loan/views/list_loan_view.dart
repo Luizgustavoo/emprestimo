@@ -42,7 +42,7 @@ class LoanView extends GetView<LoanController> {
                           Loan loan = controller.listLoan[index];
 
                           String dataEmprestimo =
-                              controller.formatApiDate(loan.createdAt!);
+                              controller.formatApiDate(loan.dataEmprestimo!);
                           return Dismissible(
                             key: UniqueKey(),
                             direction: loan.itensAtivos! <= 0

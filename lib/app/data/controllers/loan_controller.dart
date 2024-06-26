@@ -4,6 +4,8 @@ import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class LoanController extends GetxController {
   RxList<Loan> listLoan = RxList<Loan>([]);
@@ -20,11 +22,21 @@ class LoanController extends GetxController {
     super.onInit();
   }
 
+  void initializeTimeZones() {
+    tz.initializeTimeZones();
+  }
+
   String formatApiDate(String apiDate) {
+    initializeTimeZones();
+
+    final location = tz.getLocation('America/Sao_Paulo');
+
     DateTime date = DateTime.parse(apiDate);
 
+    final tz.TZDateTime localDate = tz.TZDateTime.from(date, location);
+
     final DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm\'h\'');
-    return formatter.format(date);
+    return formatter.format(localDate);
   }
 
   Future<void> getLoans() async {
@@ -32,9 +44,7 @@ class LoanController extends GetxController {
     try {
       final token = UserService.getToken();
       listLoan.value = await repository.getAllLoans("Bearer $token");
-    } catch (e) {
-      //
-    }
+    } catch (e) {}
     isLoading.value = false;
   }
 
