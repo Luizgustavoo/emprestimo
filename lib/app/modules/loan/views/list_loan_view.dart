@@ -108,16 +108,15 @@ class LoanView extends GetView<LoanController> {
                                           onPressed: () {},
                                           icon: const Icon(Icons.edit)),
                                   children: loan.itens!.map((item) {
-                                    String dataDev = item.itensEmprestimo!
-                                                .dataDevolucao !=
-                                            null
-                                        ? controller.formatApiDate(
-                                            item.itensEmprestimo!.dataDevolucao)
+                                    String dataDev = item.dataDevolucao != null
+                                        ? controller
+                                            .formatApiDate(item.dataDevolucao)
                                         : '';
+
                                     return ListTile(
                                       dense: true,
                                       title: Text(
-                                        'ITEM: ${item.nome}',
+                                        'ITEM: ${item.itens!.nome}',
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black54),
@@ -127,7 +126,7 @@ class LoanView extends GetView<LoanController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'RECEBIDO POR: ${item.itensEmprestimo!.usuarioRecebeu != null ? item.itensEmprestimo!.usuarioRecebeu!.name : ''}',
+                                            'RECEBIDO POR: ${item.usuariorecebeu != null ? item.usuariorecebeu!.name : ''}',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black54),
@@ -140,9 +139,7 @@ class LoanView extends GetView<LoanController> {
                                           ),
                                         ],
                                       ),
-                                      trailing: item.itensEmprestimo!
-                                                  .situacaoId ==
-                                              2
+                                      trailing: item.situacaoId! == 2
                                           ? const SizedBox()
                                           : IconButton(
                                               onPressed: () {

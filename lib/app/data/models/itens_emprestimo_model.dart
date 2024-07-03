@@ -1,3 +1,6 @@
+import 'package:emprestimo/app/data/models/item_model.dart';
+import 'package:emprestimo/app/data/models/user_model.dart';
+
 class ItensEmprestimo {
   int? id;
   int? emprestimoId;
@@ -6,6 +9,8 @@ class ItensEmprestimo {
   dynamic dataDevolucao;
   String? createdAt;
   String? updatedAt;
+  Item? itens;
+  User? usuariorecebeu;
 
   ItensEmprestimo(
       {this.id,
@@ -14,6 +19,8 @@ class ItensEmprestimo {
       this.situacaoId,
       this.dataDevolucao,
       this.createdAt,
+      this.itens,
+      this.usuariorecebeu,
       this.updatedAt});
 
   ItensEmprestimo.fromJson(Map<String, dynamic> json) {
@@ -24,6 +31,10 @@ class ItensEmprestimo {
     dataDevolucao = json['data_devolucao'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    itens = json['itens'] != null ? Item.fromJson(json['itens']) : null;
+    usuariorecebeu = json['usuariorecebeu'] != null
+        ? User.fromJson(json['usuariorecebeu'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +46,11 @@ class ItensEmprestimo {
     data['data_devolucao'] = dataDevolucao;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['usuario_recebeu_devolucao'] = usuariorecebeu;
+    if (itens != null) {
+      data['itens'] = itens!.toJson();
+    }
+    data['usuariorecebeu'] = usuariorecebeu;
     return data;
   }
 }

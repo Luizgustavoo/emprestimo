@@ -31,7 +31,7 @@ class Item {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     itensEmprestimo =
-        json['pivot'] != null ? ItemLoan.fromJson(json['pivot']) : null;
+        json['itens'] != null ? ItemLoan.fromJson(json['itens']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -44,7 +44,7 @@ class Item {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     if (itensEmprestimo != null) {
-      data['pivot'] = itensEmprestimo!.toJson();
+      data['itens'] = itensEmprestimo!.toJson();
     }
     return data;
   }

@@ -1,5 +1,6 @@
 import 'package:emprestimo/app/data/models/collaborator_model.dart';
 import 'package:emprestimo/app/data/models/item_model.dart';
+import 'package:emprestimo/app/data/models/itens_emprestimo_model.dart';
 import 'package:emprestimo/app/data/models/user_model.dart';
 
 class Loan {
@@ -11,7 +12,7 @@ class Loan {
   String? dataEmprestimo;
   Collaborator? colaborador;
   User? user;
-  List<Item>? itens;
+  List<ItensEmprestimo>? itens;
   int? itensAtivos;
 
   Loan(
@@ -40,10 +41,9 @@ class Loan {
     user = json['usuario'] != null ? User.fromJson(json['usuario']) : null;
 
     if (json['itens'] != null) {
-      print(json['id']);
-      itens = <Item>[];
+      itens = <ItensEmprestimo>[];
       json['itens'].forEach((v) {
-        itens!.add(Item.fromJson(v));
+        itens!.add(ItensEmprestimo.fromJson(v));
       });
     }
   }

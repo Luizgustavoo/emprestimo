@@ -86,8 +86,8 @@ class LoanController extends GetxController {
             loan.user?.name?.toLowerCase().contains(query) ?? false;
         bool containsDate =
             loan.createdAt?.toLowerCase().contains(query) ?? false;
-        bool containsItem = loan.itens
-                ?.any((item) => item.nome!.toLowerCase().contains(query)) ??
+        bool containsItem = loan.itens?.any(
+                (item) => item.itens!.nome!.toLowerCase().contains(query)) ??
             false;
         return containsColaborador ||
             containsUser ||
