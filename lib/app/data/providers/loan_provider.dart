@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:emprestimo/app/data/base_url.dart';
 import 'package:emprestimo/app/data/models/loan_model.dart';
+import 'package:emprestimo/app/utils/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -22,7 +23,7 @@ class LoanApiClient {
           "Authorization": token,
         },
       );
-
+      // print(json.decode(response.body));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401 &&
@@ -53,6 +54,7 @@ class LoanApiClient {
       }, body: {
         "item_id": itemId.toString(),
         "emprestimo_id": loan.id.toString(),
+        "usuario_id": UserService.getUserId().toString()
       });
       if (response.statusCode == 200) {
         return json.decode(response.body);
@@ -83,6 +85,7 @@ class LoanApiClient {
         "Authorization": token,
       }, body: {
         "emprestimo_id": loan.id.toString(),
+        "usuario_id": UserService.getUserId().toString()
       });
       if (response.statusCode == 200) {
         return json.decode(response.body);

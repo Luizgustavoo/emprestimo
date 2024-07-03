@@ -87,7 +87,7 @@ class LoanView extends GetView<LoanController> {
                                   dense: true,
                                   tilePadding: const EdgeInsets.all(5),
                                   title: Text(
-                                    'RECEBIDO POR:  ${loan.colaborador!.nome}',
+                                    'TOMADOR:  ${loan.colaborador!.nome!.toUpperCase()}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -122,11 +122,23 @@ class LoanView extends GetView<LoanController> {
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black54),
                                       ),
-                                      subtitle: Text(
-                                        'DATA DEV: $dataDev',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black54),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'RECEBIDO POR: ${item.itensEmprestimo!.usuarioRecebeu != null ? item.itensEmprestimo!.usuarioRecebeu!.name : ''}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black54),
+                                          ),
+                                          Text(
+                                            'DATA DEV: $dataDev',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black54),
+                                          ),
+                                        ],
                                       ),
                                       trailing: item.itensEmprestimo!
                                                   .situacaoId ==

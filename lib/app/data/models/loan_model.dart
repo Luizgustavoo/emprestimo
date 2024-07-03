@@ -38,7 +38,9 @@ class Loan {
         ? Collaborator.fromJson(json['colaborador'])
         : null;
     user = json['usuario'] != null ? User.fromJson(json['usuario']) : null;
+
     if (json['itens'] != null) {
+      print(json['id']);
       itens = <Item>[];
       json['itens'].forEach((v) {
         itens!.add(Item.fromJson(v));

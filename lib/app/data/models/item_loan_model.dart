@@ -1,3 +1,5 @@
+import 'package:emprestimo/app/data/models/user_model.dart';
+
 class ItemLoan {
   int? id;
   int? emprestimoId;
@@ -6,6 +8,7 @@ class ItemLoan {
   dynamic dataDevolucao;
   String? createdAt;
   String? updatedAt;
+  User? usuarioRecebeu;
 
   ItemLoan(
       {this.id,
@@ -24,6 +27,9 @@ class ItemLoan {
     dataDevolucao = json['data_devolucao'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    usuarioRecebeu = json['usuariorecebeu'] != null
+        ? User.fromJson(json['usuariorecebeu'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +40,9 @@ class ItemLoan {
     data['situacao_id'] = situacaoId;
     data['data_devolucao'] = dataDevolucao;
     data['created_at'] = createdAt;
+    if (usuarioRecebeu != null) {
+      data['usuariorecebeu'] = usuarioRecebeu!.toJson();
+    }
     data['updated_at'] = updatedAt;
     return data;
   }
