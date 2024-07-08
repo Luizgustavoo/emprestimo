@@ -113,7 +113,6 @@ class LoanView extends GetView<LoanController> {
                                         ? controller
                                             .formatApiDate(item.dataDevolucao)
                                         : '';
-
                                     return ListTile(
                                       dense: true,
                                       title: Text(
@@ -145,7 +144,7 @@ class LoanView extends GetView<LoanController> {
                                           ? const SizedBox()
                                           : IconButton(
                                               onPressed: () {
-                                                controller.deleteItemLoan(
+                                                showDeleteItemDialog(context,
                                                     item.itemId!, loan.id!);
                                               },
                                               icon: const Icon(CupertinoIcons
@@ -200,6 +199,51 @@ class LoanView extends GetView<LoanController> {
               backgroundColor:
                   retorno['message'] == "success" ? Colors.green : Colors.red,
               colorText: Colors.white,
+            );
+          },
+          child: const Text(
+            "Confirmar",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void showDeleteItemDialog(BuildContext context, int itemId, int loanId) {
+    Get.defaultDialog(
+      titlePadding: const EdgeInsets.all(16),
+      contentPadding: const EdgeInsets.all(16),
+      title: "Confirmação",
+      content: const Text(
+        textAlign: TextAlign.center,
+        'Tem certeza que deseja excluir este item do empréstimo?',
+        style: TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text(
+            "Cancelar",
+            style: TextStyle(color: Color(0xFF014acb)),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            await controller.deleteItemLoan(itemId, loanId);
+            Get.back();
+            Get.snackbar(
+              'Sucesso',
+              'Item excluído com sucesso!',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              duration: const Duration(milliseconds: 1500),
             );
           },
           child: const Text(

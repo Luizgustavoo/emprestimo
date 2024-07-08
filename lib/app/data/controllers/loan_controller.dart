@@ -45,7 +45,7 @@ class LoanController extends GetxController {
       final token = UserService.getToken();
       listLoan.value = await repository.getAllLoans("Bearer $token");
     } catch (e) {
-      print(e);
+      Exception(e);
     }
     isLoading.value = false;
   }
