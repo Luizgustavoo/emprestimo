@@ -56,6 +56,7 @@ class LoanApiClient {
         "emprestimo_id": loan.id.toString(),
         "usuario_id": UserService.getUserId().toString()
       });
+      print(json.decode(response.body));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else if (response.statusCode == 401 &&

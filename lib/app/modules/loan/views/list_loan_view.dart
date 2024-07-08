@@ -95,7 +95,8 @@ class LoanView extends GetView<LoanController> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('ENTREGUE POR: ${loan.user!.name}'),
+                                      Text('ENTREGUE POR: ${loan.user!.name}'
+                                          .toUpperCase()),
                                       Text('DATA EMP: $dataEmprestimo'),
                                     ],
                                   ),
@@ -126,7 +127,8 @@ class LoanView extends GetView<LoanController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'RECEBIDO POR: ${item.usuariorecebeu != null ? item.usuariorecebeu!.name : ''}',
+                                            'RECEBIDO POR: ${item.usuariorecebeu != null ? item.usuariorecebeu!.name : ''}'
+                                                .toUpperCase(),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black54),
@@ -144,7 +146,7 @@ class LoanView extends GetView<LoanController> {
                                           : IconButton(
                                               onPressed: () {
                                                 controller.deleteItemLoan(
-                                                    item.id!, loan.id!);
+                                                    item.itemId!, loan.id!);
                                               },
                                               icon: const Icon(CupertinoIcons
                                                   .arrowshape_turn_up_left_2_fill)),

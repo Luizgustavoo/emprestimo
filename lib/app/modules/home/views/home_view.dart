@@ -48,6 +48,8 @@ class HomeView extends GetView<HomeController> {
                     top: 12, right: 12, left: 12, bottom: 5),
                 child: TextFormField(
                   decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFFf1f5ff),
                       label: const Text('Pesquise o equipamento'),
                       suffixIcon: IconButton(
                         onPressed: () {},

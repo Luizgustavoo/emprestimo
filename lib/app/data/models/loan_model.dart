@@ -1,5 +1,4 @@
 import 'package:emprestimo/app/data/models/collaborator_model.dart';
-import 'package:emprestimo/app/data/models/item_model.dart';
 import 'package:emprestimo/app/data/models/itens_emprestimo_model.dart';
 import 'package:emprestimo/app/data/models/user_model.dart';
 
